@@ -35,19 +35,19 @@ chrome.webRequest.onResponseStarted.addListener(function (details) {
   });
 
 
-chrome.webNavigation.onCommitted.addListener(function (details) {
-  if (!reloadTransitionTypes.includes(details.transitionType)) {
-    return;
-  }
-  if (details.tabId) {
-    console.log(`resetting tab ${details.tabId}`)
-    delete tabCache[details.tabId]
-    chrome.browserAction.setIcon({ path: "/icons/icon19-gray.png", tabId: details.tabId });
-    chrome.browserAction.setBadgeText({ text: '', tabId: details.tabId })
-  }
-}, {
-    urls: ['<all_urls>']
-  });
+// chrome.webNavigation.onCommitted.addListener(function (details) {
+//   if (!reloadTransitionTypes.includes(details.transitionType)) {
+//     return;
+//   }
+//   if (details.tabId) {
+//     console.log(`resetting tab ${details.tabId}`)
+//     delete tabCache[details.tabId]
+//     chrome.browserAction.setIcon({ path: "/icons/icon19-gray.png", tabId: details.tabId });
+//     chrome.browserAction.setBadgeText({ text: '', tabId: details.tabId })
+//   }
+// }, {
+//     urls: ['<all_urls>']
+//   });
 
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
@@ -64,6 +64,15 @@ chrome.tabs.onRemoved.addListener(function (tabId) {
   console.log(`resetting tab ${tabId}`)
   delete tabCache[tabId]
 })
+
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+  if (changeInfo.status === 'loading') {
+    console.log(`resetting tab ${tabId}`)
+    delete tabCache[tabId]
+    chrome.browserAction.setIcon({ path: "/icons/icon19-gray.png", tabId: tabId });
+    chrome.browserAction.setBadgeText({ text: '', tabId: tabId })
+  }
+});
 
 // chrome.tabs.onActivated.addListener(function (details) {
 //   activeTabs[details.windowId] = details.tabId
