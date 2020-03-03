@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+	<style type="text/css">
+		#mainPopup {
+			padding: 0px 10px 10px 10px;
+			font-family: Helvetica, Ubuntu, Arial, sans-serif;
+		}
+
+		h1 {
+			font-size: 2em;
+		}
+
+		.streams-table {
+			width: 100%;
+			font-size: larger;
+		}
+
+		.url-row {
+			margin: 5px;
+		}
+		.url-name-col {
+			padding: 0px 15px 0px 0px;
+		}
+		.url-action-col {
+			width: 86px;
+		}
+		.url-action {
+			text-decoration: none;
+		}
+
+		.url-action-component {
+			background-color: aliceblue;
+			border-radius: 8px;
+			padding: 5px;
+			text-align: center;
+			width: 70px;
+			color: cornflowerblue;
+		}
+	</style>
+	<script src="browser_action.js"></script>
+</head>
+
+<body>
+	<div id="mainPopup">
+		<h1>Found Streams:</h1>
+		<table id="streams" class="streams-table">
+		</table>
+	</div>
+</body>
