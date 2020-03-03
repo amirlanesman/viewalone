@@ -5,11 +5,10 @@
 // });
 
 const tabCache = {}
-// const activeTabs = {}
 const reloadTransitionTypes = ['link', 'typed', 'auto_bookmark', 'manual_subframe', 'generated', 'start_page', 'form_submit', 'reload', 'keyword', 'keyword_generated']
 const videoExtensions = ['m3u8', 'mp4']
 
-const getExtension = (url) => {return url.split('?').shift().split('#').shift().split('.').pop()}
+const getExtension = (url) => { return url.split('?').shift().split('#').shift().split('.').pop() }
 
 chrome.extension.onMessage.addListener(
   function (request, sender, sendResponse) {
@@ -18,7 +17,6 @@ chrome.extension.onMessage.addListener(
       console.log('sending response:', tabCache[request.getObjectsTab], request.getObjectsTab, tabCache)
       sendResponse(tabCache[request.getObjectsTab]);
     }
-    // chrome.pageAction.show(sender.tab.id);
   });
 
 chrome.webRequest.onResponseStarted.addListener(function (details) {
@@ -28,13 +26,10 @@ chrome.webRequest.onResponseStarted.addListener(function (details) {
     }
     console.log(`pushing url '${details.url}' to tab ${details.tabId}`)
     tabCache[details.tabId].push(details.url)
-    chrome.browserAction.setIcon({path: "/icons/icon19.png", tabId: details.tabId});
+    chrome.browserAction.setIcon({ path: "/icons/icon19.png", tabId: details.tabId });
     chrome.browserAction.setBadgeText({ text: '' + tabCache[details.tabId].length, tabId: details.tabId })
-    // chrome.browserAction.enable(details.tabId)
     chrome.runtime.sendMessage({ addNewObject: { tabId: details.tabId, url: details.url } })
   }
-  // console.log(details.url);
-
 }, {
     urls: ["<all_urls>"]
   });
@@ -47,8 +42,7 @@ chrome.webNavigation.onCommitted.addListener(function (details) {
   if (details.tabId) {
     console.log(`resetting tab ${details.tabId}`)
     delete tabCache[details.tabId]
-    // chrome.browserAction.disable(details.tabId)
-    chrome.browserAction.setIcon({path: "/icons/icon19-gray.png", tabId: details.tabId});
+    chrome.browserAction.setIcon({ path: "/icons/icon19-gray.png", tabId: details.tabId });
     chrome.browserAction.setBadgeText({ text: '', tabId: details.tabId })
   }
 }, {
@@ -65,6 +59,11 @@ chrome.webRequest.onBeforeRequest.addListener(
   { urls: ["<all_urls>"] },
   ["blocking"]
 );
+
+chrome.tabs.onRemoved.addListener(function (tabId) {
+  console.log(`resetting tab ${tabId}`)
+  delete tabCache[tabId]
+})
 
 // chrome.tabs.onActivated.addListener(function (details) {
 //   activeTabs[details.windowId] = details.tabId
