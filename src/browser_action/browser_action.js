@@ -1,7 +1,7 @@
 const MAX_NAME_LENGTH = 60;
 
 function getName(url) {
-	url = url.split('#').shift().split('?').shift() //.split('/').pop()
+	url = url.split('#').shift().split('?').shift().split('/').pop()
 	if (url.length < 60) {
 		return url
 	} else {
@@ -16,6 +16,7 @@ function addUrlToStreams(url, div) {
 	nameCol.className = 'url-name-col'
 	nameCol.innerText = getName(url)
 	nameCol.setAttribute('nowrap', true)
+	nameCol.setAttribute('title', url)
 	const actionCol = document.createElement('td')
 	actionCol.className = 'url-action-col'
 	const actionNode = document.createElement('a')

@@ -1,6 +1,6 @@
 {
   "name": "WatchAlone",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "manifest_version": 2,
   "description": "Get video requests made by a page so you can pop them out.",
   "homepage_url": "https://github.com/amirlanesman/watchalone",
